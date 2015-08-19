@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-table.css') }}">
+    
+    <style>
+        .metanav        { text-align: left; font-size: 1.0em; padding: 0.3em; margin-bottom: 1em; }
+        b               { font-size: 2.2em; }
+
+    </style>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-1.11.2.min.js') }}"></script>
+
+
+	
+</head>
+    
+<body>
+    <div class=metanav>
+        {% if not session.logged_in %}
+        <a href="{{ url_for('login') }}">log in</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+    </div>
+    {% if session.logged_in %}
+
+    <center>
+    <h2>Welcome to Homepage</h2>
+    <div style="position: relative; background-color: #cccc33; width: 500px; padding: 10px; color: white; border: #0000cc 2px dashed; font-size:2.5em"><center> Total Left {{ total_today }}<center></div>
+    </center>
+    {# Note: Graphs #}
+    <script src="{{ url_for('static', filename='highstocks/js/highstock.js') }}"></script>
+    <script src="{{ url_for('static', filename='highstocks/js/modules/exporting.js') }}"></script>
+<div style="position: relative;">
+
+
+    {# Note: Graph of data #}
+    <div style="position: relative; top: 200px; left: 50px; width:300px">
+    <h1>All Data</h1>
+    </div>
+    <div id={{chartID2|safe}} style="width: 910px; height: 500px; border: 2px solid; position: relative; left: 400px;"></div>
+        <script type="text/javascript">
+                var series2={{graph_data|safe}};
+                var chartID2={{chartID2|safe}};
+        </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='chart2.js') }}"></script>
+
+	<center><b>Data in Table</b></center>
+    
+	<div class="container" style="position: relative; width:1380px;">
+        
+        <table data-toggle="table" data-sort-name="stargazers_count" data-sort-order="desc" data-query-params="queryParams" data-pagination="true" data-search="true" data-row-style="rowStyle">
+        <thead>
+            <tr>
+                <th data-field="name" data-sortable="true">Name</th>
+                <th data-field="today" data-sortable="true">Today</th>
+                <th data-field="old" data-sortable="true">Yesterday</th>
+                <th data-field="diff" data-sortable="true">Daily Change [%]</th>
+		                <th data-field="initial" data-sortable="true">At start {{initialdate}}</th>
+		<th data-field="diff2" data-sortable="true">Change from start [%]</th>
+		
+	    </tr>
+        </thead>
+        <tbody>
+            {% for row in result %}
+	    <tr>    
+                <td>{{row['name']}}</a></td>
+                <td>{{row['today']}}</td>
+                <td>{{row['yesterday']}}</td>
+                <td>{{row['diff']}}</td>
+		
+		<td>{{row['initial']}}</td>
+		<td>{{row['diff2']}}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+  </div>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap-table.js') }}"></script>
+    {% endif %}
+</body>
+</html>
