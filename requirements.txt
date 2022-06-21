@@ -13,7 +13,7 @@ click==3.3
 flask-appconfig==0.9.1
 inflect==0.2.5
 itsdangerous==0.24
-numpy==1.9.1
+numpy==1.22.0
 pexpect==3.3
 pycrypto==2.6.1
 pytz==2014.10
